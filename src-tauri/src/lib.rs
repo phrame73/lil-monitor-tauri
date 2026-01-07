@@ -98,7 +98,10 @@ async fn get_system_stats(state: State<'_, AppState>) -> Result<SystemStats, Str
 pub fn run() {
     // Fix for "Could not create surfaceless EGL display" on Linux
     #[cfg(target_os = "linux")]
-    std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+    {
+        std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+        std::env::set_var("WEBKIT_DISABLE_COMPOSITING_MODE", "1");
+    }
 
     let system = System::new_with_specifics(
         RefreshKind::nothing()
