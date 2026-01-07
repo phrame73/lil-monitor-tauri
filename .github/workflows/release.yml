@@ -62,7 +62,12 @@ jobs:
       - name: Install System Dependencies
         run: |
           pacman -Syu --noconfirm
-          pacman -S --noconfirm pkgconf webkit2gtk openssl gtk3 libappindicator-gtk3 librsvg nodejs npm rustup git wget file
+          pacman -S --noconfirm pkgconf webkit2gtk libsoup3 openssl gtk3 libappindicator-gtk3 librsvg nodejs npm rustup git wget file
+
+      - name: Verify Library Existence (Debug)
+        run: |
+          ls -la /usr/lib/pkgconfig | grep javascript || echo "Not found in /usr/lib/pkgconfig"
+          pkg-config --list-all | grep javascript || echo "pkg-config cannot see javascriptcore"
 
       - name: Setup Rust
         run: |
@@ -72,6 +77,8 @@ jobs:
         run: npm install
 
       - name: Build Arch Package
+        env:
+          PKG_CONFIG_PATH: /usr/lib/pkgconfig:/usr/share/pkgconfig
         run: npm run tauri build
 
       - name: Upload Arch Asset
