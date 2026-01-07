@@ -96,6 +96,10 @@ async fn get_system_stats(state: State<'_, AppState>) -> Result<SystemStats, Str
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // Fix for "Could not create surfaceless EGL display" on Linux
+    #[cfg(target_os = "linux")]
+    std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+
     let system = System::new_with_specifics(
         RefreshKind::nothing()
             .with_memory(MemoryRefreshKind::everything())
