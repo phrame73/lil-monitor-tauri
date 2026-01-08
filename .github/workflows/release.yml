@@ -59,11 +59,13 @@ jobs:
   #     - name: Checkout repository
   #       uses: actions/checkout@v4
   #
-  #     - name: Install System Dependencies
-  #       run: |
-  #         pacman -Syu --noconfirm
-  #         pacman -S --noconfirm pkgconf webkit2gtk libsoup3 openssl gtk3 libappindicator-gtk3 librsvg nodejs npm rustup git wget file
-  #
+        - name: Install System Dependencies
+          run: |
+            pacman -Syu --noconfirm
+            pacman -S --noconfirm pkgconf webkit2gtk libsoup3 openssl gtk3 libappindicator-gtk3 librsvg nodejs npm rustup git wget file
+            echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+            locale-gen
+            export LANG=en_US.UTF-8  #
   #     - name: Verify Library Existence (Debug)
   #       run: |
   #         ls -la /usr/lib/pkgconfig | grep javascript || echo "Not found in /usr/lib/pkgconfig"
